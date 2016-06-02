@@ -103,6 +103,8 @@ Needed by souper.
 
 Souper need a *SMT solver* to work. You have the choice between Boolector, CVC4, STP or Z3. We choose CVC4 because of its good documentation and examples.
 
+CVC4 is included in ```code/cvc```
+
 [Get CVC4](http://cvc4.cs.nyu.edu/downloads/)
 
 ### Building Souper
