@@ -1,0 +1,3 @@
+[submodule "code/souper"]
+	path = code/souper
+	url = https://github.com/google/souper.git
