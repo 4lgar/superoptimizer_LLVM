@@ -4,7 +4,7 @@
 
 ## In pratical
 
-We choose souper as superoptimizer because of its documentation and example. This project is made by some people from Google. 
+We choose souper as superoptimizer because of its documentation and example. This project is made by some people from Google. Souper need a SMT solver to prove equivalence between some LLVM IR found in a program and a smaller 
 
 # Setup
 
@@ -48,6 +48,23 @@ Souper need a *SMT solver* to work. You have the choice between Boolector, CVC4,
 
 ## Building Souper
 
-First, you have to build and update all the dependencies in ```souper-master``` directory. It takes a long time...
+You can find all these steps in [souper repository](https://github.com/google/souper/blob/master/README). Steps below are just simplified.
+
+First, you have to build and update all the dependencies in ```code/souper``` directory. It takes a long time...
 
 ```./update_deps.sh $buildtype $extra_cmake_flags```
+
+After that, you can build souper. In ```code/souper``` directory, do:
+
+- $ mkdir souper-build
+- $ cd souper-build
+- $ cmake -DCMAKE_BUILD_TYPE=$buildtype ../
+- $ cd souper-build
+- $ make
+
+You can optionally run ```make check``` to run Souper's test suite.
+
+# Using Souper
+
+You can find all these steps in [souper repository](https://github.com/google/souper/blob/master/README). Steps below are just simplified.
+
