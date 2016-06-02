@@ -8,8 +8,6 @@ We choose souper as superoptimizer because of its documentation and example. Thi
 
 # Setup
 
-First, don't forget to git module init / git module update to get souper.
-
 ## Requirement
 
 **LLVM**
@@ -22,6 +20,8 @@ Because this project is about LLVM.
 **souper**
 
 Souper is a superoptimizer for LLVM IR. It uses an SMT solver to help identify missing peephole optimizations in LLVM's midend optimizers.
+
+This repository is included as a submodule in this project. You just have to git submodule init / git submodule update ;)
 
 ```git clone https://github.com/google/souper.git```
 
