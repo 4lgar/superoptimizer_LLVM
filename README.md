@@ -61,10 +61,6 @@ A lot of other things could be analysed for making a better super-optimizer like
 
 ## Sources and references
 
-## What we choose
-
-We choose souper as superoptimizer because of its documentation and example. This project is made by some people from Google. Souper need a SMT solver to prove equivalence between some LLVM IR found in a program and a smaller 
-
 ## Setup
 
 ### Requirement
