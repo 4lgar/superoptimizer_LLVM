@@ -8,6 +8,8 @@ We choose souper as superoptimizer because of its documentation and example. Thi
 
 # Setup
 
+First, don't forget to git module init / git module update to get souper.
+
 ## Requirement
 
 **LLVM**
