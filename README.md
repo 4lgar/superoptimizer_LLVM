@@ -9,9 +9,11 @@ We want our compilers to be :
 
 We will mainly talk about Effectiveness and Correctness. So are the compilers good at making code faster ?
 It depends. Optimization is implemented in three main steps :
+
 1. Analysis : Is the code optimizable.
 2. Safety check : Is the optimization safe?
 3. Transformation : Adapt the code with the optimization.
+
 This will be done in multiple passes.
 
 But adding optimizations to the compiler is costly, both in compile time and in development time (and maintenance). 
@@ -29,6 +31,7 @@ So here the Effectiveness of the compiler was improved but not the correctness.
 So there was a problem of having correct optimizations and to solve this problem one way was adding an automated theorem prover. That is we transform every instruction into a predicates the combination of these predicates give us a specific behaviour (or theorem). We can then check if the instructions of the optimized code then also verify this given theorem. If so the optimization is proved to be correct. (This could not be done with bruteforce because the input space is way to big).
 
 The idea of a modern Superoptimizer is to find optimizations that are totally correct. We have two main ways to use superoptimizers :
+
 1. Find optimizations during compile time for making faster programs.
 2. Find general optimizations to make compilers better at making fast programs.
 
@@ -37,6 +40,7 @@ An example is by Sands (2011) making a Super-Optimizer for LLVM IR who found man
 An other example is the Souper project by Google. Souper tried to address both goals. A lot of work has been done searching for optimizations will building LLVM itself with LLVM Super-Optimized by Souper.
 
 So what Souper does is :
+
 1. It takes the LLVM IR (Intermediate Representation) bytecode and converts it in its own IR (basically a simplified LLVM IR).
 2. And turns these instructions into a DAG (Directed Acyclic Graph). This has many advantages, it shows the dependencies but is also easy to (de)serialize by simple graph traversal.
 3. Then it turns the instructions into predicates (in SMT-Lib format, Satisfiability Modulo Theories).
