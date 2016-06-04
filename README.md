@@ -37,7 +37,7 @@ The idea of a modern Superoptimizer is to find optimizations that are totally co
 
 An example is by Sands (2011) making a Super-Optimizer for LLVM IR who found many optimizations that were missing in LLVM. (a lot of very simple optimizations).
 
-An other example is the Souper project by Google. Souper tried to address both goals. A lot of work has been done searching for optimizations will building LLVM itself with LLVM Super-Optimized by Souper.
+An other example is the Souper project. Souper tried to address both goals. A lot of work has been done searching for optimizations will building LLVM itself with LLVM Super-Optimized by Souper.
 
 So what Souper does is :
 
