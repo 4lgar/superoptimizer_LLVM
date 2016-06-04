@@ -56,6 +56,7 @@ So the super-optimizer and the compiler work together to make faster programs bu
 
 ## Conclusion
 This approach benefits everyone, from the compiler users to the compiler developpers (and then also the compiler users again). The questions of which optimizations to implement in a real compiler could arise. This like any other question around optimization requires profiling. There are two main ways to investigate this :
+
 1. Find the optimizations that are the most often used during compile time. (this would make compile time faster but only makes a faster compiler).
 2. Find which optimization's code is the most used at run time for the compiled program. (Of course this shoudl be tested with a wide range of programs, for example a linux kernel could give us a good idea) This would make a more efficient compiler.
 
