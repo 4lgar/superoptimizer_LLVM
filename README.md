@@ -62,8 +62,6 @@ This approach benefits everyone, from the compiler users to the compiler develop
 
 A lot of other things could be analysed for making a better super-optimizer like exploit dataflow facts (LLVM knows a lot about the data). But there is already a lot to learn from Souper. Why would we investigate Souper ? Because it is open-source and because it already made LLVM a better compiler !
 
-## Sources and references
-
 ## Setup
 
 ### Requirement
@@ -157,7 +155,7 @@ uint32_t bar(uint32_t a, uint32_t b){
 }
 ```
 
-```foo``` simply calculate some output and ```bar``` always return 0 because of impossible condition. We hope that the optimizer will find a simpler way to compute ```foo``` output and remove useless condition ```bar```.
+```foo``` calculate some output and ```bar``` always return 0 because of the impossible condition. We hope that the optimizer will find a simpler way to compute ```foo``` output and remove useless conditions in ```bar```.
 
 Here is the generated asm with clang -O3:
 
@@ -207,16 +205,16 @@ Souper win 500k with these optimizations.
 
 With souper, we won 4 seconds sorting 100000 elements (17s vs 13s). The size are pretty similar.
 
-We tried to sort less element (10000). In this case, souper will be more longer than clang -O3 version (0.136s vs 0.143s). In addition, souper binary will be the same size. That's normal because of constant replacement.
+We tried to sort less element (10000). In this case, souper will be more longer than clang -O3 version (0.136s vs 0.143s). In addition, souper binary will be the same size. That's normal because of constants replacement.
 
 ### Matrix inverter
 
 Souper doesn't do it well: Both size (27k vs 15k) and time (2.2s vs 1.9s) are affected.
 
-That's totally normal because souper does not optimize floating point instruction. We tried anyway to compile our matrix inverter lab that we did in HPC to show what's going on.
+That's normal because souper does not optimize floating point instructions. We tried it anyway to compile our matrix inverter lab that we did in HPC course to show what's going on.
 
 ### Conclusion
 
-Gains are not really significative in these examples. Because it found little optimizations, souper will work better on larger code base. John Regehr told us that souper compile a clang that was 3Mb smaller than the version compiled with -O3 version.
+Gains are not really significative in these examples. Because it found little optimizations, souper will work better on larger code base: it can compile clang who is 3Mb smaller than the version compiled with -O3 version.
 
 Souper is under construction. But at this point, it can actually make the diffrence, even if it can only optimize i1 values that it can prove to be 0 or 1. 
