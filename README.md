@@ -31,14 +31,16 @@ So here the Effectiveness of the compiler was improved but not the correctness.
 So there was a problem of having correct optimizations and to solve this problem one way was adding an automated theorem prover. That is we transform every instruction into a predicates the combination of these predicates give us a specific behaviour (or theorem). We can then check if the instructions of the optimized code then also verify this given theorem. If so the optimization is proved to be correct. (This could not be done with bruteforce because the input space is way to big).
 
 The idea of a modern Superoptimizer is to find optimizations that are totally correct. We have two main ways to use superoptimizers :
+
 1. Find optimizations during compile time for making faster programs.
 2. Find general optimizations to make compilers better at making fast programs.
 
 An example is by Sands (2011) making a Super-Optimizer for LLVM IR who found many optimizations that were missing in LLVM. (a lot of very simple optimizations).
 
-An other example is the Souper project by Google. Souper tried to address both goals. A lot of work has been done searching for optimizations will building LLVM itself with LLVM Super-Optimized by Souper.
+An other example is the Souper project. Souper tried to address both goals. A lot of work has been done searching for optimizations will building LLVM itself with LLVM Super-Optimized by Souper.
 
 So what Souper does is :
+
 1. It takes the LLVM IR (Intermediate Representation) bytecode and converts it in its own IR (basically a simplified LLVM IR).
 2. And turns these instructions into a DAG (Directed Acyclic Graph). This has many advantages, it shows the dependencies but is also easy to (de)serialize by simple graph traversal.
 3. Then it turns the instructions into predicates (in SMT-Lib format, Satisfiability Modulo Theories).
@@ -54,6 +56,7 @@ So the super-optimizer and the compiler work together to make faster programs bu
 
 ## Conclusion
 This approach benefits everyone, from the compiler users to the compiler developpers (and then also the compiler users again). The questions of which optimizations to implement in a real compiler could arise. This like any other question around optimization requires profiling. There are two main ways to investigate this :
+
 1. Find the optimizations that are the most often used during compile time. (this would make compile time faster but only makes a faster compiler).
 2. Find which optimization's code is the most used at run time for the compiled program. (Of course this shoudl be tested with a wide range of programs, for example a linux kernel could give us a good idea) This would make a more efficient compiler.
 
