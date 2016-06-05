@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define data_len 10000
+#define data_len 100000
 
 /* Allocate an array of size "len" and fill it
  * with random data.

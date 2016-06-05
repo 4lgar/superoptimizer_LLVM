@@ -9,9 +9,11 @@ We want our compilers to be :
 
 We will mainly talk about Effectiveness and Correctness. So are the compilers good at making code faster ?
 It depends. Optimization is implemented in three main steps :
+
 1. Analysis : Is the code optimizable.
 2. Safety check : Is the optimization safe?
 3. Transformation : Adapt the code with the optimization.
+
 This will be done in multiple passes.
 
 But adding optimizations to the compiler is costly, both in compile time and in development time (and maintenance). 
@@ -98,6 +100,8 @@ Needed by souper.
 **CVC4**
 
 Souper need a *SMT solver* to work. You have the choice between Boolector, CVC4, STP or Z3. We choose CVC4 because of its good documentation and examples.
+
+CVC4 is included in ```code/cvc```
 
 [Get CVC4](http://cvc4.cs.nyu.edu/downloads/)
 
