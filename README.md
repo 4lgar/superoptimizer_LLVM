@@ -62,8 +62,6 @@ This approach benefits everyone, from the compiler users to the compiler develop
 
 A lot of other things could be analysed for making a better super-optimizer like exploit dataflow facts (LLVM knows a lot about the data). But there is already a lot to learn from Souper. Why would we investigate Souper ? Because it is open-source and because it already made LLVM a better compiler !
 
-## Examples
-
 ## Sources and references
 
 ## Setup
@@ -130,3 +128,95 @@ You can optionally run ```make check``` to run Souper's test suite.
 
 You can find all these steps in [souper repository](https://github.com/google/souper/blob/master/README). Steps below are just simplified.
 
+To simply compile a c file, use the following command:
+
+```
+path/to/souper/third_party/llvm/Release/bin/clang -g -O3 -Xclang -load -Xclang path/to/souper/souper-build/libsouperPass.so -mllvm -cvc4-path=path/to/cvc/cvc4-1.4-x86_64-linux-opt yourFileToCompile.c
+```
+
+## Examples
+
+### Simple test
+
+in ```code/test/simple/main.c```, we have two simple functions:
+
+```
+uint32_t foo(uint32_t a, uint32_t b){
+	return a*8 + b;
+}
+
+uint32_t bar(uint32_t a, uint32_t b){
+	uint32_t c = a * b;
+
+	if(a < b)
+		if(b < c)
+			if(a > c)
+				return foo(a, b);
+
+	return 0;
+}
+```
+
+```foo``` simply calculate some output and ```bar``` always return 0 because of impossible condition. We hope that the optimizer will find a simpler way to compute ```foo``` output and remove useless condition ```bar```.
+
+Here is the generated asm with clang -O3:
+
+```
+0000000000400520 <foo>:
+  400520:	8d 04 fe             	lea    (%rsi,%rdi,8),%eax
+  400523:	c3                   	retq   
+  400524:	66 66 66 2e 0f 1f 84 	data16 data16 nopw %cs:0x0(%rax,%rax,1)
+  40052b:	00 00 00 00 00 
+
+0000000000400530 <bar>:
+  400530:	89 f1                	mov    %esi,%ecx
+  400532:	0f af cf             	imul   %edi,%ecx
+  400535:	31 c0                	xor    %eax,%eax
+  400537:	39 f9                	cmp    %edi,%ecx
+  400539:	73 0b                	jae    400546 <bar+0x16>
+  40053b:	39 f7                	cmp    %esi,%edi
+  40053d:	73 07                	jae    400546 <bar+0x16>
+  40053f:	39 f1                	cmp    %esi,%ecx
+  400541:	76 03                	jbe    400546 <bar+0x16>
+  400543:	8d 04 fe             	lea    (%rsi,%rdi,8),%eax
+  400546:	c3                   	retq   
+  400547:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  40054e:	00 00 
+```
+
+Here is the generated asm with souper
+
+```
+0000000000400520 <foo>:
+  400520:	8d 04 fe             	lea    (%rsi,%rdi,8),%eax
+  400523:	c3                   	retq   
+  400524:	66 66 66 2e 0f 1f 84 	data16 data16 nopw %cs:0x0(%rax,%rax,1)
+  40052b:	00 00 00 00 00 
+
+0000000000400530 <bar>:
+  400530:	31 c0                	xor    %eax,%eax
+  400532:	c3                   	retq   
+  400533:	66 66 66 66 2e 0f 1f 	data16 data16 data16 nopw %cs:0x0(%rax,%rax,1)
+  40053a:	84 00 00 00 00 00 
+```
+
+As we can see, both clang -O3 and souper found that parameters of ```foo``` are constant in our programm and replace the result by a constant. But clang -O3 compile the 3 conditionals tests for ```bar```, a missed optimization that souper found!
+Souper win 500k with these optimizations.
+
+### Bubble sort
+
+With souper, we won 4 seconds sorting 100000 elements (17s vs 13s). The size are pretty similar.
+
+We tried to sort less element (10000). In this case, souper will be more longer than clang -O3 version (0.136s vs 0.143s). In addition, souper binary will be the same size. That's normal because of constant replacement.
+
+### Matrix inverter
+
+Souper doesn't do it well: Both size (27k vs 15k) and time (2.2s vs 1.9s) are affected.
+
+That's totally normal because souper does not optimize floating point instruction. We tried anyway to compile our matrix inverter lab that we did in HPC to show what's going on.
+
+### Conclusion
+
+Gains are not really significative in these examples. Because it found little optimizations, souper will work better on larger code base. John Regehr told us that souper compile a clang that was 3Mb smaller than the version compiled with -O3 version.
+
+Souper is under construction. But at this point, it can actually make the diffrence, even if it can only optimize i1 values that it can prove to be 0 or 1. 
